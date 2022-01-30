@@ -17,6 +17,15 @@ namespace connect4
             PrintBoard(board);
             Turn(board);
             PrintBoard(board);
+          
+            Turn(board);
+            PrintBoard(board);
+       
+            Turn(board);
+            PrintBoard(board);
+          
+            Turn(board);
+            PrintBoard(board);
         }
 
         private static void PrintBoard(int[,] array)
@@ -72,15 +81,26 @@ namespace connect4
             array[indexrow, indexcolumn] = playerTurn;
         }
 
-        private static void check(int[,] array)
+        private static int check(int[,] array)
         {
             for (int r = 0; r < 6; r++)
             {
                 for (int c = 0; c < 7; r++)
                 {
-                   
+                    if (c + 3 <= 6)
+                    {
+                        if (array[r, c] == playerTurn &&
+                            array[r, c + 1] == playerTurn &&
+                            array[r, c + 2] == playerTurn &&
+                            array[r, c + 3] == playerTurn)
+                        {
+                            return playerTurn;
+                        }
+                    }
                 }
             }
+
+            return 0;
         }
     }
 }
