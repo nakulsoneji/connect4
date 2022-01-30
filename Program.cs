@@ -1,4 +1,4 @@
-﻿namespace connect4
+namespace connect4
 {
     internal static class Code
     {
@@ -72,9 +72,15 @@
             array[indexrow, indexcolumn] = playerTurn;
         }
 
-        private static void check(int[,] board)
+        private static void check(int[,] array)
         {
-            
+            for (int r = 0; r < 6; r++)
+            {
+                for (int c = 0; c < 7; r++)
+                {
+                   
+                }
+            }
         }
     }
 }
