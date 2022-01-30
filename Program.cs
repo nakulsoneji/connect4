@@ -11,21 +11,16 @@ namespace connect4
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0}
-        }; 
+        };
+
         private static void Main(string[] args)
         {
             PrintBoard(board);
-            Turn(board);
-            PrintBoard(board);
-          
-            Turn(board);
-            PrintBoard(board);
-       
-            Turn(board);
-            PrintBoard(board);
-          
-            Turn(board);
-            PrintBoard(board);
+            while (check(board) == 0)
+            {
+                Turn(board);
+                PrintBoard(board);
+            }
         }
 
         private static void PrintBoard(int[,] array)
@@ -85,9 +80,9 @@ namespace connect4
         {
             for (int r = 0; r < 6; r++)
             {
-                for (int c = 0; c < 7; r++)
+                for (int c = 0; c < 7; c++)
                 {
-                    if (c + 3 <= 6)
+                    if (c + 3 <= 6 && c + 2 <= 6 && c + 1 <= 6)
                     {
                         if (array[r, c] == playerTurn &&
                             array[r, c + 1] == playerTurn &&
