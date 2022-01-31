@@ -19,6 +19,7 @@ namespace connect4
             while (check(board) == 0)
             {
                 Turn(board);
+            
                 PrintBoard(board);
             }
         }
@@ -43,14 +44,6 @@ namespace connect4
 
         private static void Turn(int[,] array)
         {
-            Console.WriteLine($"type the row you want to place a {playerTurn} on");
-            string row = Console.ReadLine()!;
-            while (Int32.TryParse(row, out int res) != true)
-            {
-                Console.WriteLine("invalid input, try again");
-                Console.WriteLine($"type the row you want to place a {playerTurn} on");
-                row = Console.ReadLine()!;
-            }
             Console.WriteLine($"type the column you want to place a {playerTurn} on");
             string column = Console.ReadLine()!;
             while (Int32.TryParse(column, out int res) != true)
@@ -59,22 +52,34 @@ namespace connect4
                 Console.WriteLine($"type the column you want to place a {playerTurn} on");
                 column = Console.ReadLine()!;
             }
-
-            int indexrow = Int32.Parse(row) - 1;
-            int indexcolumn = Int32.Parse(column) - 1;
-            while (array[indexrow, indexcolumn] == 1 || array[indexrow, indexcolumn] == 2)
+            while (Int32.Parse(column) > 7 || Int32.Parse(column) < 1 || array[0, Int32.Parse(column) - 1] != 0)
             {
-                Console.WriteLine("that space is already occupied, try again");
-                Console.WriteLine($"type the row you want to place a {playerTurn} on");
-                row = Console.ReadLine()!;
+                Console.WriteLine("you can only input from 1 - 7 and not in a filled column");
                 Console.WriteLine($"type the column you want to place a {playerTurn} on");
                 column = Console.ReadLine()!;
-                indexrow = Int32.Parse(row) - 1;
-                indexcolumn = Int32.Parse(column) - 1;
             }
-
-            array[indexrow, indexcolumn] = playerTurn;
-        }
+            for (int i = 5; i > -1; i--)
+            {
+                if (array[i, Int32.Parse(column) - 1] == 0)
+                {
+                    array[i, Int32.Parse(column) - 1] = playerTurn;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            switch (playerTurn)
+            {
+                case 1:
+                    playerTurn = 2;
+                    break;
+                case 2:
+                    playerTurn = 1;
+                    break;
+            }
+        }   
 
         private static int check(int[,] array)
         {
@@ -84,16 +89,75 @@ namespace connect4
                 {
                     if (c + 3 <= 6 && c + 2 <= 6 && c + 1 <= 6)
                     {
-                        if (array[r, c] == playerTurn &&
-                            array[r, c + 1] == playerTurn &&
-                            array[r, c + 2] == playerTurn &&
-                            array[r, c + 3] == playerTurn)
+                        if (array[r, c] == array[r, c + 1] &&
+                            array[r, c + 1] == array[r, c + 2] &&
+                            array[r, c + 2] == array[r, c + 3] &&
+                            array[r, c + 3] == array[r, c] &&
+                            array[r, c] != 0)
                         {
-                            return playerTurn;
+                            Console.WriteLine($"{array[r, c]} wins!");
+                            return array[r, c];  
                         }
+                        
                     }
                 }
             }
+            for (int c = 0; c < 7; c++)
+            {
+                for (int r = 0; r < 6; r++)
+                {
+                    if (r + 3 <= 5 && r + 2 <= 5 && r + 1 <= 5)
+                    {
+                        if (array[r, c] == array[r + 1, c] &&
+                            array[r + 1, c] == array[r + 2, c] &&
+                            array[r + 2, c] == array[r + 3, c] &&
+                            array[r + 3, c] == array[r, c] &&
+                            array[r, c] != 0)
+                        {
+                            Console.WriteLine($"{array[r, c]} wins!");
+                            return array[r, c];  
+                        }
+                        
+                    }
+                }
+            }
+            for (int r = 0; r < 6; r++)
+            {
+                for (int c = 0; c < 7; c++)
+                {
+                    if (c + 3 <= 6 && c + 2 <= 6 && c + 1 <= 6 && 
+                    r + 3 <= 5 && r + 2 <= 5 && r + 1 <= 5)
+                    {
+                        if (array[r, c] == array[r + 1, c + 1] &&
+                            array[r + 1, c + 1] == array[r + 2, c + 2] &&
+                            array[r + 2, c + 2] == array[r + 3, c + 3] &&
+                            array[r + 3, c + 3] == array[r, c] &&
+                            array[r, c] != 0)
+                        {
+                            Console.WriteLine($"{array[r, c]} wins!");
+                            return array[r, c];  
+                        }
+                        
+                    }
+                    if (c - 3 >= 0 && c - 2 >= 0 && c - 1 >= 0 && 
+                    r - 3 >= 0 && r - 2 >= 0 && r - 1 >= 0)
+                    {
+                        Console.WriteLine($"r: {r}");
+                        Console.WriteLine($"c: {c}");
+                        if (array[r, c] == array[r - 1, c - 1] &&
+                            array[r - 1, c - 1] == array[r - 2, c - 2] &&
+                            array[r - 2, c - 2] == array[r - 3, c - 3] &&
+                            array[r - 3, c - 3] == array[r, c] &&
+                            array[r, c] != 0)
+                        {
+                            Console.WriteLine($"{array[r, c]} wins!");
+                            return array[r, c];  
+                        }
+                        
+                    }
+                }
+            }
+            
 
             return 0;
         }
