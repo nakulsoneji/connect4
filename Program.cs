@@ -16,7 +16,7 @@ namespace connect4
         private static void Main(string[] args)
         {
             PrintBoard(board);
-            while (check(board) == 0)
+            while (Check(board) == 0)
             {
                 Turn(board);
             
@@ -26,18 +26,33 @@ namespace connect4
 
         private static void PrintBoard(int[,] array)
         {
-            for (int r = 0; r < 6; r++)
+            for (int r = -1; r < 6; r++)
             {
                 for (int c = 0; c < 7; c++)
-                {   
-                    if (c + 1 == array.GetLength(1))
+                {
+                    if (r == -1)
                     {
-                        Console.Write(board[r, c] + "\n");
+                        Console.Write($"c{c + 1}" + " ");
                     }
-                    else
+                    if (c + 1 == array.GetLength(1))
+                    {   
+                        
+                        if (r > -1)
+                        {
+                            Console.Write(board[r, c] + "\n");
+                        }
+                        else
+                        {
+                            Console.Write("\n");
+                        }
+                        
+                    }
+                    else if (r != -1)
                     {
                         Console.Write(board[r, c] + "  ");
                     }
+
+                   
                 }
             }
         }
@@ -65,10 +80,6 @@ namespace connect4
                     array[i, Int32.Parse(column) - 1] = playerTurn;
                     break;
                 }
-                else
-                {
-                    continue;
-                }
             }
             switch (playerTurn)
             {
@@ -81,7 +92,7 @@ namespace connect4
             }
         }   
 
-        private static int check(int[,] array)
+        private static int Check(int[,] array)
         {
             for (int r = 0; r < 6; r++)
             {
@@ -140,16 +151,16 @@ namespace connect4
                         
                     }
                     if (c - 3 >= 0 && c - 2 >= 0 && c - 1 >= 0 && 
-                    r - 3 >= 0 && r - 2 >= 0 && r - 1 >= 0)
+                    r + 3 <= 5 && r + 2 <= 5 && r + 1 <= 5)
                     {
-                        Console.WriteLine($"r: {r}");
-                        Console.WriteLine($"c: {c}");
-                        if (array[r, c] == array[r - 1, c - 1] &&
-                            array[r - 1, c - 1] == array[r - 2, c - 2] &&
-                            array[r - 2, c - 2] == array[r - 3, c - 3] &&
-                            array[r - 3, c - 3] == array[r, c] &&
+                        if (array[r, c] == array[r + 1, c - 1] &&
+                            array[r + 1, c - 1] == array[r + 2, c - 2] &&
+                            array[r + 2, c - 2] == array[r + 3, c - 3] &&
+                            array[r + 3, c - 3] == array[r, c] && 
                             array[r, c] != 0)
                         {
+                           
+                            
                             Console.WriteLine($"{array[r, c]} wins!");
                             return array[r, c];  
                         }
